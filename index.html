@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kopi Nusantara - Cafe Modern</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        :root {
+            --bg-color: #f9f6f0;
+            --card-bg: #ffffff;
+            --text-color: #2c1810;
+            --primary-color: #8b4513;
+            --accent-color: #d2691e;
+            --shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        body.dark-mode {
+            --bg-color: #1a120b;
+            --card-bg: #2c1e14;
+            --text-color: #f3e5ab;
+            --primary-color: #d2691e;
+            --accent-color: #e9967a;
+            --shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 50px;
+            background-color: var(--card-bg);
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 600;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-color);
+        }
+
+        .btn-toggle {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 20px;
+            background-color: var(--primary-color);
+            color: #fff;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .hero {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 100px 20px;
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?auto=format&fit=crop&w=1200&q=80') center/cover;
+            color: #ffffff;
+            min-height: 50vh;
+        }
+
+        .hero h1 {
+            font-size: 44px;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 18px;
+            max-width: 600px;
+            margin-bottom: 30px;
+        }
+
+        .btn-cta {
+            padding: 12px 30px;
+            font-size: 18px;
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .btn-cta:hover {
+            opacity: 0.9;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 50px auto;
+            padding: 0 20px;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 32px;
+            margin-bottom: 40px;
+            color: var(--primary-color);
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: var(--shadow);
+            text-align: center;
+        }
+
+        .card h3 {
+            margin: 15px 0 10px;
+            color: var(--primary-color);
+        }
+
+        .card p {
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .card .price {
+            font-weight: bold;
+            font-size: 18px;
+            color: var(--accent-color);
+            margin-bottom: 15px;
+        }
+
+        .btn-order {
+            padding: 8px 20px;
+            border: none;
+            border-radius: 6px;
+            background-color: var(--primary-color);
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            background-color: var(--card-bg);
+            margin-top: 50px;
+            border-top: 1px solid rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo">☕ Kopi Nusantara</div>
+        <ul class="nav-links">
+            <li><a href="#home">Beranda</a></li>
+            <li><a href="#menu">Menu Spesial</a></li>
+            <li><button class="btn-toggle" onclick="toggleDarkMode()">🌙 Mode Gelap</button></li>
+        </ul>
+    </nav>
+
+    <section class="hero" id="home">
+        <h1>Nikmati Kehangatan Kopi Asli Indonesia</h1>
+        <p>Dibuat dari biji kopi pilihan langsung dari petani lokal terbaik.</p>
+        <button class="btn-cta" onclick="pesanSekarang()">Pesan Sekarang</button>
+    </section>
+
+    <div class="container" id="menu">
+        <h2 class="section-title">Menu Favorit Kami</h2>
+        <div class="menu-grid">
+            <div class="card">
+                <h3>Espresso Gayo</h3>
+                <p>Kopi hitam pekat khas Aceh dengan cita rasa rempah dan keasaman seimbang.</p>
+                <div class="price">Rp 25.000</div>
+                <button class="btn-order" onclick="tambahPesanan('Espresso Gayo')">+ Tambah</button>
+            </div>
+            <div class="card">
+                <h3>Kopi Susu Gula Aren</h3>
+                <p>Perpaduan espresso mantap, susu segar, dan manisnya gula aren asli.</p>
+                <div class="price">Rp 28.000</div>
+                <button class="btn-order" onclick="tambahPesanan('Kopi Susu Gula Aren')">+ Tambah</button>
+            </div>
+            <div class="card">
+                <h3>Manual Brew Toraja</h3>
+                <p>Seduhan kopi sarat aroma bunga dan buah khas pegunungan Toraja.</p>
+                <div class="price">Rp 30.000</div>
+                <button class="btn-order" onclick="tambahPesanan('Manual Brew Toraja')">+ Tambah</button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Kopi Nusantara. Web buatan AI & Anda.</p>
+    </footer>
+
+    <script>
+        let keranjang = 0;
+
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const btn = document.querySelector('.btn-toggle');
+            if (document.body.classList.contains('dark-mode')) {
+                btn.textContent = '☀️ Mode Terang';
+            } else {
+                btn.textContent = '🌙 Mode Gelap';
+            }
+        }
+
+        function tambahPesanan(namaMenu) {
+            keranjang++;
+            alert('Sukses menambahkan "' + namaMenu + '" ke keranjang!\nTotal item di keranjang: ' + keranjang);
+        }
+
+        function pesanSekarang() {
+            alert('Selamat datang di Kopi Nusantara! Silakan pilih menu pilihan Anda di bawah.');
+        }
+    </script>
+
+</body>
+</html>
