@@ -19,13 +19,32 @@ def tulis_catatan(nama_file: str, isi_catatan: str):
     except Exception as e:
         return f"Gagal menyimpan file: {e}"
 
+def baca_catatan(name_file:str):
+    """Membaca isi file teks yang ada di folder proyek.
+    Args:
+        name_file: Nama file teks yang ingin di baca (contoh: 'catatan_text')
+        """
+    try: 
+        with open (name_file, "r", encoding="utf-8") as f:
+            isi = f.read()
+            return f"Isi file {name_file}:\n{isi}"
+    except Exception as e:
+        return f"Gagal membaca file: {e}"
+
 # 2. Masukkan fungsi ke dalam tools chat
 chat = client.chats.create(
     model="gemini-3.5-flash",
     config={
-        "tools": [tulis_catatan]
+        "tools": [tulis_catatan, baca_catatan],
+        "system_instruction": (
+            "Kamu adalah asisten Ai yang disiplin, aman, dan patuh."
+            "Aturan ketat: "
+            "1. Jangan pernah menulis file sembarangan atau di luar folder proyek."
+            "2. Hanya gunakan tool 'tulis_catatan' jika benar-benar diperlukan untuk tugas yang diminta"
+            "3. Selalu konfirmasi atau berikan penjelasan ringkas sebelum atau sesudah melakukan aksi."
+        ),
 
-    }
+    },
 )
 
 while True:
