@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Detektor Gerakan Isyarat -> Teks & Suara</title>
+  <style>
+    body {
+      font-family: system-ui, sans-serif;
+      background: #0f172a;
+      color: #f8fafc;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 24px;
+      margin: 0;
+    }
+    h1 { font-size: 1.4rem; margin-bottom: 12px; }
+    .container {
+      position: relative;
+      width: 640px;
+      max-width: 100%;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 2px solid #334155;
+      background: #000;
+    }
+    video {
+      width: 100%;
+      display: block;
+      transform: scaleX(-1); /* Efek cermin biar natural */
+    }
+    canvas { display: none; }
+    .panel {
+      width: 640px;
+      max-width: 100%;
+      margin-top: 16px;
+      background: #1e293b;
+      padding: 16px;
+      border-radius: 12px;
+      box-sizing: border-box;
+    }
+    .status {
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #38bdf8;
+      margin: 8px 0;
+    }
+    .controls {
+      display: flex;
+      gap: 10px;
+      margin-top: 12px;
+      flex-wrap: wrap;
+    }
+    button {
+      padding: 10px 16px;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      background: #2563eb;
+      color: white;
+    }
+    button:hover { background: #1d4ed8; }
+    button.secondary { background: #475569; }
+  </style>
+</head>
+<body>
+  <h1>Detektor Gerakan ke Teks & Suara (Tahap 1)</h1>
+
+  <div class="container">
+    <video id="webcam" autoplay playsinline></video>
+    <canvas id="canvas" width="160" height="120"></canvas>
+  </div>
+
+  <div class="panel">
+    <div>Status Deteksi:</div>
+    <div id="outputText" class="status">Menunggu kamera aktif...</div>
+    <div>Tingkat Gerakan: <span id="motionScore">0</span></div>
+
+    <div class="controls">
+      <button id="btnStart">1. Nyalakan Kamera</button>
+      <button id="btnTestVoice" class="secondary">2. Tes Suara Browser</button>
+    </div>
+  </div>
+
+  <script>
+    const video = document.getElementById("webcam");
+    const canvas = document.getElementById("canvas");
+    const ctx = canvas.getContext("2d", { willReadFrequently: true });
+    const outputText = document.getElementById("outputText");
+    const motionScoreEl = document.getElementById("motionScore");
+    const btnStart = document.getElementById("btnStart");
+    const btnTestVoice = document.getElementById("btnTestVoice");
+
+    let prevFrame = null;
+    let isRunning = false;
+    let lastSpokenTime = 0;
+
+    // Fungsi mengubah teks menjadi suara (Text-to-Speech)
+    function ucapkan(teks) {
+      if (!("speechSynthesis" in window)) return;
+      window.speechSynthesis.cancel(); // Hentikan suara sebelumnya jika bertumpuk
+      const suara = new SpeechSynthesisUtterance(teks);
+      suara.lang = "id-ID";
+      suara.rate = 1.0;
+      window.speechSynthesis.speak(suara);
+    }
+
+    btnTestVoice.addEventListener("click", () => {
+      outputText.textContent = "Tes Suara: Halo, sistem siap!";
+      ucapkan("Halo, sistem deteksi gerakan siap digunakan.");
+    });
+
+    btnStart.addEventListener("click", async () => {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({
+          video: { width: 640, height: 480 },
+          audio: false
+        });
+        video.srcObject = stream;
+        outputText.textContent = "Kamera aktif. Coba gerakkan tangan...";
+        if (!isRunning) {
+          isRunning = true;
+          requestAnimationFrame(deteksiGerakan);
+        }
+      } catch (err) {
+        outputText.textContent = "Gagal akses kamera: " + err.message;
+      }
+    });
+
+    function deteksiGerakan() {
+      if (video.readyState === video.HAVE_ENOUGH_DATA) {
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+        const currentFrame = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+
+        if (prevFrame) {
+          let diffCount = 0;
+          // Bandingkan perubahan piksel antar frame
+          for (let i = 0; i < currentFrame.length; i += 16) {
+            const rDiff = Math.abs(currentFrame[i] - prevFrame[i]);
+            const gDiff = Math.abs(currentFrame[i + 1] - prevFrame[i + 1]);
+            const bDiff = Math.abs(currentFrame[i + 2] - prevFrame[i + 2]);
+            if (rDiff + gDiff + bDiff > 90) {
+              diffCount++;
+            }
+          }
+
+          motionScoreEl.textContent = diffCount;
+          const now = Date.now();
+
+          // Jika gerakan cukup besar & jeda suara minimal 2.5 detik
+          if (diffCount > 180 && now - lastSpokenTime > 2500) {
+            const pesan = "Gerakan terdeteksi";
+            outputText.textContent = pesan;
+            ucapkan(pesan);
+            lastSpokenTime = now;
+          } else if (diffCount <= 180 && now - lastSpokenTime > 1500) {
+            outputText.textContent = "Diam / Tidak ada gerakan besar";
+          }
+        }
+
+        prevFrame = new Uint8ClampedArray(currentFrame);
+      }
+      requestAnimationFrame(deteksiGerakan);
+    }
+  </script>
+</body>
+</html>

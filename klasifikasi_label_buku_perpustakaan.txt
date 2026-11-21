@@ -1,0 +1,64 @@
+SISTEM KLASIFIKASI LABEL BUKU PERPUSTAKAAN (Dewey Decimal Classification - DDC)
+
+1. STRUKTUR LABEL BUKU
+-------------------------------------
+Baris 1: Nomor Klasifikasi DDC (contoh: 004)
+Baris 2: 3 Huruf Pertama Nama Pengarang (contoh: KHO)
+Baris 3: 1 Huruf Pertama Judul Buku - Huruf Kecil (contoh: p)
+
+Contoh Label Buku:
+004
+KHO
+p
+
+2. KLASIFIKASI UTAMA DDC (000 - 900)
+-------------------------------------
+000 - Karya Umum, Komputer, & Informasi
+  - 004: Ilmu Komputer & Pemrograman
+  - 020: Perpustakaan & Informasi
+
+100 - Filsafat & Psikologi
+  - 150: Psikologi
+  - 170: Etika
+
+200 - Agama
+  - 297: Agama Islam
+  - 200: Agama Umum
+
+300 - Ilmu Sosial
+  - 330: Ekonomi
+  - 370: Pendidikan
+  - 340: Hukum
+
+400 - Bahasa
+  - 410: Linguistik
+  - 420: Bahasa Inggris
+  - 499: Bahasa Indonesia
+
+500 - Sains / Ilmu Murni
+  - 510: Matematika
+  - 530: Fisika
+  - 540: Kimia
+  - 570: Biologi
+
+600 - Teknologi & Ilmu Terapan
+  - 610: Kedokteran & Kesehatan
+  - 620: Teknik & Rekayasa
+  - 650: Manajemen & Bisnis
+
+700 - Kesenian & Olahraga
+  - 740: Desain & Seni Rupa
+  - 796: Olahraga
+
+800 - Kesusastraan / Sastra
+  - 810: Sastra Amerika
+  - 899: Sastra Indonesia (Novel, Puisi)
+
+900 - Sejarah & Geografi
+  - 910: Geografi & Perjalanan
+  - 959: Sejarah Indonesia / Asia Tenggara
+
+3. PANDUAN PENULISAN LABEL
+-------------------------------------
+- Tempel label pada punggung buku bagian bawah (jarak 3 cm dari bawah).
+- Sertakan warna label jika perpustakaan menggunakan kode warna per kategori.
